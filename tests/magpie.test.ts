@@ -37,7 +37,7 @@ test("插件默认配置不覆盖用户已有的 Perch Provider", async () => {
 
 test("包声明 GitHub 来源、插件发现信息和单账号并发限制", async () => {
   const pkg = await Bun.file(new URL("../package.json", import.meta.url)).json();
-  expect(pkg.version).toBe("0.0.3");
+  expect(pkg.version).toBe("0.0.4");
   expect(pkg.repository).toEqual({ type: "git", url: "https://github.com/adminmtan/magpie-plugin-perch.git" });
   expect(pkg.keywords).toEqual(expect.arrayContaining(["opencode", "opencode-plugin", "provider", "magpie", "perch"]));
   expect(pkg.magpie).toMatchObject({

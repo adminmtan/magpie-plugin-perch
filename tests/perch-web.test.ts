@@ -161,6 +161,14 @@ test("不支持的温度与工具参数在创建会话前被拒绝", async () =>
   expect(calls).toHaveLength(0);
 });
 
+test("兼容 Magpie v0.1.3337 的最小模型探测参数", async () => {
+  const send = await client();
+  expect((await send(undefined, false, undefined, { max_tokens: 16 })).status).toBe(200);
+  expect((await send(undefined, false, undefined, { max_tokens: 32 })).status).toBe(400);
+  expect((await send(undefined, false, undefined, { max_completion_tokens: 16 })).status).toBe(400);
+  expect(calls.filter(call => call.path === "/api/perchai/chat")).toHaveLength(1);
+});
+
 test("流中断会失败，不输出成功结束帧", async () => {
   for (const value of ["eof", "error", "rewrite"]) {
     scenario = value;

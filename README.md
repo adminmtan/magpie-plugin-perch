@@ -1,7 +1,7 @@
 # magpie-plugin-perch
 
 Perch 文本对话适配原型，目标为群晖 NAS 上的 Magpie **v0.1.3337**。
-当前发布版本：**v0.0.3**。
+当前发布版本：**v0.0.4**。
 已依据该版本源码实现 OpenCode 插件入口，按 Perch 公开前端实现 thread/chat 网页协议，并通过原版 host.js 的本机模拟验收。
 **正式插件代码已在登录浏览器中验证真实 JSON/SSE 转换、续聊、会话隔离和取消请求；独立 Bun Cookie 鉴权与 NAS 链路尚未验收，实验接入仍默认关闭（501）。**
 
@@ -13,7 +13,7 @@ Perch 文本对话适配原型，目标为群晖 NAS 上的 Magpie **v0.1.3337**
 在 Magpie 的 Plugins 页面输入以下地址并点击安装：
 
 ```text
-github:adminmtan/magpie-plugin-perch#v0.0.3
+github:adminmtan/magpie-plugin-perch#v0.0.4
 ```
 
 固定 tag 不会自动切换到未验证代码。新版本发布后，需将末尾 tag 改为对应版本。安装完成后添加 Perch 账号、填写 Cookie，并显式开启 `experimental-web`；真实请求可能消耗账号额度。
@@ -48,7 +48,7 @@ $body | curl.exe -N 'http://127.0.0.1:8787/v1/chat/completions' -H 'Content-Type
 
 ## 第一版支持范围
 
-仅接受 `model: perch-default`、文本 `messages` 与 `stream`。首次传单条 user；续聊传回此前完整的 user/assistant 历史，插件沿已确认的 thread 继续。未知历史返回 409，不自动重放或丢弃；system、工具、多模态、temperature 等参数返回 400。
+仅接受 `model: perch-default`、文本 `messages` 与 `stream`；另兼容 Magpie v0.1.3337 模型测试固定发送的 `max_tokens: 16`，该字段只用于通过宿主探测，不会映射为 Perch 输出长度。首次传单条 user；续聊传回此前完整的 user/assistant 历史，插件沿已确认的 thread 继续。未知历史返回 409，不自动重放或丢弃；其他 `max_tokens` 值、system、工具、多模态、temperature 等参数返回 400。
 
 会话映射仅存内存，最多 128 条，30 分钟有效；重启、凭据变化、淘汰或失败续聊后需新开对话。账号路由须保持同一账号。插件通过 `chat.headers` 接收 Magpie/OpenCode 的 sessionID，并转换为内部 `x-magpie-session`；直接调用仍兼容该头。没有会话标识时按账号和精确历史匹配，不支持同一历史分支并行续写。
 

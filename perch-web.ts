@@ -16,6 +16,7 @@ interface ChatBody {
   model: "perch-default";
   messages: TextMessage[];
   stream?: boolean;
+  max_tokens?: 16;
 }
 
 function badRequest(message: string): never { throw new ProviderError("invalid_request", message, 400); }
@@ -23,9 +24,10 @@ function badRequest(message: string): never { throw new ProviderError("invalid_r
 function validate(body: unknown): ChatBody {
   if (!body || typeof body !== "object" || Array.isArray(body)) badRequest("请求必须为 JSON 对象。");
   const data = body as Record<string, unknown>;
-  if (Object.keys(data).some(key => !["model", "messages", "stream"].includes(key))) badRequest("网页接口不支持这些参数，第一版仅接受 model/messages/stream。");
+  if (Object.keys(data).some(key => !["model", "messages", "stream", "max_tokens"].includes(key))) badRequest("网页接口不支持这些参数，第一版仅接受 model/messages/stream，以及 Magpie 模型探测使用的 max_tokens=16。");
   if (data.model !== "perch-default") badRequest("不支持该模型。");
   if (data.stream !== undefined && typeof data.stream !== "boolean") badRequest("stream 必须为布尔值。");
+  if (data.max_tokens !== undefined && data.max_tokens !== 16) badRequest("max_tokens 仅兼容 Magpie 模型探测值 16，不支持通用输出长度控制。");
   if (!Array.isArray(data.messages) || !data.messages.length || data.messages.length > 256) badRequest("messages 必须包含 1 至 256 条文本消息。");
   let size = 0;
   for (let index = 0; index < data.messages.length; index++) {
