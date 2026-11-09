@@ -1,12 +1,22 @@
 # magpie-plugin-perch
 
 Perch 文本对话适配原型，目标为群晖 NAS 上的 Magpie **v0.1.3337**。
-当前发布版本：**v0.0.1**。
+当前开发版本：**v0.0.2**。
 已依据该版本源码实现 OpenCode 插件入口，按 Perch 公开前端实现 thread/chat 网页协议，并通过原版 host.js 的本机模拟验收。
 **正式插件代码已在登录浏览器中验证真实 JSON/SSE 转换、续聊、会话隔离和取消请求；独立 Bun Cookie 鉴权与 NAS 链路尚未验收，实验接入仍默认关闭（501）。**
 
 第一版范围、验收矩阵与真实接入所缺材料见 [docs/v1.md](docs/v1.md)。
 实际版本、源码提交和已发现的 Perch thread/SSE 协议见 [docs/integration.md](docs/integration.md)。
+
+## 安装
+
+在 Magpie 的 Plugins 页面输入以下地址并点击安装：
+
+```text
+github:adminmtan/magpie-plugin-perch#v0.0.1
+```
+
+固定 tag 不会自动切换到未验证代码。新版本发布后，需将末尾 tag 改为对应版本。安装完成后添加 Perch 账号、填写 Cookie，并显式开启 `experimental-web`；真实请求可能消耗账号额度。
 
 ## 运行
 
@@ -50,7 +60,7 @@ Perch 总是返回 SSE；插件按 `answer_delta` 聚合或转发，收到成功
 
 ## Magpie 宿主兼容性验证
 
-`package.json` 的 main 已指向 `magpie.ts`，它提供 `config`、`auth.loader` 和返回 Response 的 custom fetch。
+`package.json` 的 main 已指向 `magpie.ts`，它提供 `config`、`chat.headers`、`auth.loader` 和返回 Response 的 custom fetch。
 如已单独取得目标版本源码，可运行：
 
 ```powershell

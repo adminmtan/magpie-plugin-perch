@@ -1,9 +1,28 @@
 {
   "name": "magpie-plugin-perch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "description": "Experimental Perch web text provider for Magpie v0.1.3337",
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "provider",
+    "magpie",
+    "perch"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adminmtan/magpie-plugin-perch.git"
+  },
+  "magpie": {
+    "name": "Perch AI",
+    "summary": {
+      "zh": "通过 Perch 网页会话提供实验性文本对话",
+      "en": "Experimental Perch web text provider"
+    },
+    "maxConcurrency": 1
+  },
   "main": "magpie.ts",
   "files": [
     "magpie.ts",

@@ -20,11 +20,31 @@ test("真实宿主入口只导出插件工厂，不把错误类识别成工厂",
   const config: { provider?: Record<string, any> } = {};
   await hooks.config(config);
   expect(config.provider?.["perch-ai"].npm).toBe("@ai-sdk/openai-compatible");
-  expect(config.provider?.["perch-ai"].models["perch-default"].toolcall).toBe(false);
+  expect(config.provider?.["perch-ai"].models["perch-default"].tool_call).toBe(false);
   expect(hooks.auth.provider).toBe("perch-ai");
   const output = { headers: {} as Record<string, string> };
   await hooks["chat.headers"]({ sessionID: "conversation-1", model: { providerID: "perch-ai" } }, output);
   expect(output.headers).toEqual({ "X-Magpie-Session": "conversation-1" });
+});
+
+test("插件默认配置不覆盖用户已有的 Perch Provider", async () => {
+  const hooks = await magpie();
+  const existing = { name: "用户配置", api: "http://127.0.0.1:9999/v1", models: {} };
+  const config: { provider?: Record<string, any> } = { provider: { "perch-ai": existing } };
+  await hooks.config(config);
+  expect(config.provider?.["perch-ai"]).toBe(existing);
+});
+
+test("包声明 GitHub 来源、插件发现信息和单账号并发限制", async () => {
+  const pkg = await Bun.file(new URL("../package.json", import.meta.url)).json();
+  expect(pkg.version).toBe("0.0.2");
+  expect(pkg.repository).toEqual({ type: "git", url: "https://github.com/adminmtan/magpie-plugin-perch.git" });
+  expect(pkg.keywords).toEqual(expect.arrayContaining(["opencode", "opencode-plugin", "provider", "magpie", "perch"]));
+  expect(pkg.magpie).toMatchObject({
+    name: "Perch AI",
+    summary: { zh: "通过 Perch 网页会话提供实验性文本对话", en: "Experimental Perch web text provider" },
+    maxConcurrency: 1,
+  });
 });
 
 test("默认不向未经验证的 Perch 端点发送凭据", async () => {

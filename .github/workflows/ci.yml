@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - name: Fetch target Magpie host
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse --branch v0.1.3337 https://github.com/yetone/magpie.git .magpie-source
+          git -C .magpie-source sparse-checkout set --no-cone /internal/plugin/host.js
+      - name: Verify Magpie v0.1.3337 host
+        run: npm run test:magpie -- "$GITHUB_WORKSPACE/.magpie-source/internal/plugin/host.js"

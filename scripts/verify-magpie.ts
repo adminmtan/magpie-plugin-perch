@@ -63,7 +63,9 @@ try {
   assert.equal(initialized.result.plugins[0].error, undefined);
   assert.deepEqual(initialized.result.plugins[0].provides, ["perch-ai"]);
   const providers = await rpc("providers", {});
-  assert.ok(JSON.stringify(providers.result).includes("perch-default"));
+  const provider = providers.result.find((entry: { id?: string }) => entry.id === "perch-ai");
+  assert.ok(provider?.models.some((model: { id?: string }) => model.id === "perch-default"));
+  assert.equal(provider.maxConcurrency, 1);
   const signed = await rpc("apiKey", { provider: "perch-ai", method: 0, key: "local-fixture-only" });
   assert.equal(signed.result.ok, true);
   const account = signed.result.account;

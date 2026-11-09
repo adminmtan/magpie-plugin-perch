@@ -40,14 +40,14 @@ export default async function magpiePerch(input?: { magpie?: { option(provider: 
   return {
     async config(config: { provider?: Record<string, unknown> }) {
       config.provider ??= {};
-      config.provider[ID] = {
+      config.provider[ID] ??= {
         name: "Perch AI (接入待验证)",
         npm: "@ai-sdk/openai-compatible",
         api: `${SITE}/v1`,
         models: {
           "perch-default": {
             name: "Perch Web Assistant",
-            toolcall: false,
+            tool_call: false,
             reasoning: false,
             modalities: { input: ["text"], output: ["text"] },
           },

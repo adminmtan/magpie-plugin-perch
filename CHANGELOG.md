@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.0.2 - 2026-11-09
+
+- 使用 Magpie/OpenCode 识别的 `tool_call: false` 声明模型不支持工具调用。
+- 不再覆盖用户在 `plugins.json` 中已有的 `perch-ai` Provider 配置。
+- 声明 GitHub 来源、插件发现信息和每账号单请求并发限制。
+- 增加固定 Git tag 的安装说明和 GitHub CI。
+
 ## v0.0.1 - 2026-11-09
 
 首个实验版本，面向 Magpie v0.1.3337。
