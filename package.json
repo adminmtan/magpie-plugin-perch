@@ -1,0 +1,29 @@
+{
+  "name": "magpie-plugin-perch",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Experimental Perch web text provider for Magpie v0.1.3337",
+  "main": "magpie.ts",
+  "files": [
+    "magpie.ts",
+    "perch-web.ts",
+    "protocol.ts",
+    "README.md",
+    "CHANGELOG.md",
+    "THIRD_PARTY_NOTICES.md",
+    "docs"
+  ],
+  "scripts": {
+    "dev": "bun --watch demo.ts",
+    "start": "bun demo.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "test:magpie": "bun scripts/verify-magpie.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.4",
+    "bun": "1.4.4",
+    "typescript": "7.0.2"
+  }
+}
