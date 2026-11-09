@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.0.3 - 2026-11-09
+
+- 改用轻量 Git 标签发布，使 Magpie/Bun 看到的标签 SHA 与提交 SHA 一致，避免更新后持续提示仓库版本不同。
+
 ## v0.0.2 - 2026-11-09
 
 - 使用 Magpie/OpenCode 识别的 `tool_call: false` 声明模型不支持工具调用。
